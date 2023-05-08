@@ -10,15 +10,16 @@ function addTooltip (a){
     const tooltip = document.createElement('div')
     tooltip.innerText = text
     
-    tooltip.classList.add('tooltip')
+    tooltip.classList.toggle('tooltip')
     console.log(tooltip.style)
     tooltip.style.left = a.offsetLeft + 'px'
     
-    a.insertAdjacentElement('beforeend', tooltip)
+    a.insertAdjacentElement('afterend', tooltip)
     a.addEventListener('click', (event)=>{
         event.preventDefault()
         const currentActive = document.querySelector('.tooltip_active')
+        const currentTooltip = event.target.nextElementSibling
         if(currentActive){currentActive.classList.toggle('tooltip_active')}
-        tooltip.classList.toggle('tooltip_active')
+        if (currentActive != currentTooltip) {currentTooltip.classList.toggle('tooltip_active')}
     })
 }

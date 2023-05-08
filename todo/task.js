@@ -7,12 +7,12 @@ getTasksFromStorage()
 function addTask (event){
     event.preventDefault()
     const txt = event.target.task__input.value
-    console.log(txt)
-    renderTask(txt)
-    event.target.task__input.value = ''
-    addToStorage(txt)
+    if(txt.trim()){
+        renderTask(txt)
+        addToStorage(txt)
+    }
 
-    
+    event.target.task__input.value = ''
 }
 
 function renderTask(txt){
@@ -28,16 +28,21 @@ function renderTask(txt){
 }
 
 function getTasksFromStorage(){
-    const tasks = localStorage.getItem('tasks')
-    if(tasks){
-        tasks.split(',').forEach(task => renderTask(task))
-    }
+    let tasks = localStorage.getItem('tasks')
+    tasks = tasks? JSON.parse(tasks): []
+    tasks.forEach(task => renderTask(task))
+    
 }
 
 function addToStorage(txt){
-    let newVolue = localStorage.getItem('tasks')
-    newVolue = newVolue?newVolue + `,${txt}`:txt
-    localStorage.setItem('tasks', newVolue)
+    
+    let tasks = localStorage.getItem('tasks')
+    console.log(tasks)
+    // JSON.parse(localStorage.getItem('tasks'))
+    tasks = tasks? JSON.parse(tasks): []
+    console.log(tasks)
+    
+    localStorage.setItem('tasks', JSON.stringify([...tasks, txt]))
 }
 
 
@@ -51,9 +56,9 @@ function removeTask(event){
 }
 
 function removeFromStorage(taskIndex){
-    const tasks = localStorage.getItem('tasks').split(',')
+    const tasks = JSON.parse(localStorage.getItem('tasks'))
     tasks.splice(taskIndex,1)
-    localStorage.setItem('tasks', tasks.join(','))
+    localStorage.setItem('tasks', JSON.stringify(tasks))
 }
 
         
