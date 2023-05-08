@@ -125,7 +125,12 @@ class Shop{
    saveToStorage(product, id, img){
         const savedCart = JSON.parse(localStorage.getItem('cart')) || {}
         let quantity = product.querySelector('.cart__product-count').innerText
-        savedCart[id] = [id, quantity, img]
+        savedCart[id] = {
+            'quantity': quantity,
+            'img': img,
+        }
+       
+        // [id, quantity, img]
         localStorage.setItem('cart', JSON.stringify(savedCart))
    }
 
@@ -140,7 +145,7 @@ class Shop{
     const savedCart = JSON.parse(localStorage.getItem('cart'))
     console.log(savedCart)
     for(let key in savedCart){
-        this.createNewCartItem(...savedCart[key])
+        this.createNewCartItem(key, savedCart[key]['quantity'], savedCart[key]['img'])
     }
    }
 
